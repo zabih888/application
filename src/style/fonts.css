@@ -1,0 +1,16 @@
+@font-face {
+  font-family: "IRANSansWeb";
+  src: url("/fonts/IRANSans/woff/IRANSansWeb.woff") format("woff");
+}
+@font-face {
+  font-family: "IRANSansWebBold";
+  src: url("/fonts/IRANSans/woff/IRANSansWeb_Bold.woff") format("woff");
+}
+@font-face {
+  font-family: "IRANSansWebFaNum";
+  src: url("/fonts/IRANSans/woff/IRANSansWeb\(FaNum\).woff") format("woff");
+}
+@font-face {
+  font-family: "IRANSansWebFaNumBold";
+  src: url("/fonts/IRANSans/woff/IRANSansWeb\(FaNum\)_Bold.woff") format("woff");
+}
