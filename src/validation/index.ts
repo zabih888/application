@@ -2,23 +2,23 @@ import { z } from "zod";
 import { findValidationMessageByType, validationMessageRequired } from "./findValidationMessageByType";
 
 const validation = {
+  email: z.string().email(),
+  password: z.string().min(6, { message: "Must be at least 6 characters" }),
+
   nationalCode: z
     .string()
     .nonempty(validationMessageRequired())
     .length(10, { message: findValidationMessageByType("beCorrect", "کد ملی") })
-    .refine(
-      (value) => {
-        if (!/^\d{10}$/.test(value)) return false;
-        const check = +value[9];
-        const sum =
-          value
-            .split("")
-            .slice(0, 9)
-            .reduce((acc, x, i) => acc + +x * (10 - i), 0) % 11;
-        return sum < 2 ? check === sum : check + sum === 11;
-      },
-      findValidationMessageByType("beCorrect", "کد ملی")
-    ),
+    .refine((value) => {
+      if (!/^\d{10}$/.test(value)) return false;
+      const check = +value[9];
+      const sum =
+        value
+          .split("")
+          .slice(0, 9)
+          .reduce((acc, x, i) => acc + +x * (10 - i), 0) % 11;
+      return sum < 2 ? check === sum : check + sum === 11;
+    }, findValidationMessageByType("beCorrect", "کد ملی")),
 
   any: z.string().nonempty(validationMessageRequired()).or(z.any()),
   bankCardNumber: z
@@ -79,8 +79,6 @@ const validation = {
     })
     .refine((value) => /^\d+$/.test(value), findValidationMessageByType("beCorrect", "کد مالیاتی")),
 
-  email: z.string().email(findValidationMessageByType("beCorrect", "ایمیل")),
-
   sheba: z
     .string()
     .nonempty(validationMessageRequired())
@@ -94,15 +92,12 @@ const validation = {
     .length(24, {
       message: findValidationMessageByType("beCorrect", "شبا ملی"),
     })
-    .refine(
-      (value) => {
-        if (value.slice(2, 5) === "017") {
-          return false;
-        }
-        return /^\d+$/.test(value);
-      },
-      findValidationMessageByType("matches", "شبا ملی")
-    ),
+    .refine((value) => {
+      if (value.slice(2, 5) === "017") {
+        return false;
+      }
+      return /^\d+$/.test(value);
+    }, findValidationMessageByType("matches", "شبا ملی")),
   petition: z
     .string()
     .nonempty(validationMessageRequired())
@@ -330,7 +325,5 @@ const validation = {
       message: findValidationMessageByType("beCorrect", "سریال سیم کارت"),
     })
     .refine((value) => /^\d+$/.test(value), findValidationMessageByType("beCorrect", "سریال سیم کارت")),
-
-  password: z.string().min(6, { message: "باید حداقل ۶ کاراکتر باشد" }),
 };
 export default validation;
